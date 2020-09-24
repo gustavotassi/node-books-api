@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Inventário de Jogos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+<body>
+    <div class="container">
+        <h1 class="header">Inventário de Jogos</h1>
+    
+        <form action="http://localhost:3000/games" method="POST">
+    
+            <div class="form-group">
+                <label for="title">Título</label>
+                <input class="form-control" name="title">
+            </div>
+
+            <div class="form-group">
+                <label for="platform">Plataforma</label>
+                <input class="form-control" name="platform">
+            </div>
+
+            <div class="form-group">
+                <label for="publisher">Feito por</label>
+                <input class="form-control" name="publisher">
+            </div>
+
+            <div class="form-group">
+                <label for="year">Ano de publicação</label>
+                <input class="form-control" name="year">
+            </div>
+
+            <br>
+            
+            <button type="submit" href="/games-list" id="submit-form">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>
