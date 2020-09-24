@@ -1,22 +1,29 @@
 {
-  "name": "books-api",
+  "name": "form-api",
   "version": "0.0.0",
-  "description": "Books API.",
-  "main": "src/index.js",
+  "description": "My fist API",
+  "bin": "lib/index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gustavotassi/node-books-api.git"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postversion": "git push && git push --tags",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "start": "ts-node src/index.ts",
+    "watch": "nodemon -e ts -w ./src -x npm run watch:serve",
+    "watch:serve": "ts-node src/index.ts"
   },
   "author": "Gustavo",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/gustavotassi/node-books-api/issues"
+  "devDependencies": {
+    "@types/node": "^14.11.2",
+    "nodemon": "^2.0.4",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
   },
-  "homepage": "https://github.com/gustavotassi/node-books-api#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "tslib": "^2.0.1",
+    "tslint": "^6.1.3"
   }
 }
