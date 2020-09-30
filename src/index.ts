@@ -1,6 +1,5 @@
 import * as dotenv from 'dotenv';
 import * as express from 'express';
-import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 
@@ -11,38 +10,26 @@ const port = process.env.SERVER_PORT;
 // Iniciando o aplicativo
 const app = express();
 
-const games: any[] = [];
+const people: any[] = [];
 
 app.use(cors());
 
-//
+// Usar JSON no body
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Configurando o Express para usar EJS
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-
-// Criando um endpoint, como vai ser a página inicial mesmo, então '/'
-app.get('/', (req: express.Request, res: express.Response) => {
-    // Renderizar o html em tela
-    res.render('index');
+app.get('/api', (req: express.Request, res: express.Response) => {
+    res.send(req.body);
 });
 
-// Criando um endpoint para inserir os livros
-app.get('/games', (req: express.Request, res: express.Response) => {
-    // Renderizar o html em tela
-    res.render('games');
-});
+app.post('/api', (req: express.Request, res: express.Response) => {
+    res.json(req.body);
 
-app.post('/games', (req: express.Request, res: express.Response) => {
-    const game = req.body;
+    const person = req.body;
 
-    console.log(game);
-    games.push(game);
+    people.push(person);
 
-    res.send(game);
+    console.log(people);
 });
 
 app.listen(port, () => {
