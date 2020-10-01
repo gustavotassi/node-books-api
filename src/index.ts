@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
+import { DBService } from './services/db-service';
 
 dotenv.config();
 
@@ -18,18 +19,24 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/api', (req: express.Request, res: express.Response) => {
-    res.send(req.body);
-});
+// app.get('/api', (req: express.Request, res: express.Response) => {
+//     res.send(req.body);
+// });
 
 app.post('/api', (req: express.Request, res: express.Response) => {
     res.json(req.body);
 
-    const person = req.body;
+    // console.log(req.body);
 
-    people.push(person);
+    DBService.getInstance().addPessoa(req.body).subscribe((result) => console.log(result), (err) => console.log(err));
+});
 
-    console.log(people);
+app.post('/delete', (req: express.Request, res: express.Response) => {
+    res.json(req.body);
+
+    // console.log(req.body);
+
+    DBService.getInstance().deletePessoa(req.body).subscribe((result) => console.log(result), (err) => console.log(err));
 });
 
 app.listen(port, () => {
