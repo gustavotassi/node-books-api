@@ -62,10 +62,15 @@ export class DBService {
 
     deletePessoa(pes: IPerson): Observable<any> {
         return new Observable<any>((obs) => {
-            const query = `DELETE FROM tabpessoa WHERE pesCpf = ? AND pesSenha = ?`;
+            const query = `
+            DELETE FROM
+                tabpessoa
+            WHERE
+                pesCpf = ?
+            `;
 
             this.dbPool
-                .query({ sql: query, values: [pes.cpf, pes.password] },
+                .query({ sql: query, values: [pes.cpf] },
                     (err: MysqlError | null, results?: any) => {
                         if (err) {
                             obs.error(err);
@@ -77,5 +82,34 @@ export class DBService {
         });
     }
 
-    // TODO: updatePessoa
+    /* TODO: Terminar updatePessoa */
+
+    // updatePessoa(pes: IPerson): Observable<any> {
+    //     return new Observable<any>((obs) => {
+    //         const query = `
+    //         UPDATE
+    //             tabpessoa
+    //         SET
+    //             pesNome = ?,
+    //             pesSobrenome = ?,
+    //             pesEmail = ?,
+    //             pesCpf = ?,
+    //             pesSenha = ?
+    //         WHERE
+    //             pesID = ?
+    //         `;
+
+    //         this.dbPool
+    //             .query({ sql: query, values: [pes.name, pes.surname, pes.email, pes.cpf, pes.password, pes.ID] },
+    //                 (err: MysqlError | null, results?: any) => {
+    //                     if (err) {
+    //                         obs.error(err);
+    //                         return;
+    //                     }
+    //                     obs.next(results);
+    //                     obs.complete();
+    //                 }).start();
+    //     });
+    // }
+
 }
