@@ -58,6 +58,8 @@ export class DBService {
         });
     }
 
+    // DELETE
+
     deletePessoa(pes: IPerson): Observable<any> {
         return new Observable<any>((obs) => {
             const query = `DELETE FROM tabpessoa WHERE pesCpf = ? AND pesSenha = ?`;
@@ -74,4 +76,6 @@ export class DBService {
                     }).start();
         });
     }
+
+    // TODO: updatePessoa
 }
