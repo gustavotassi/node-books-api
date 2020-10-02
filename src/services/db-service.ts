@@ -26,6 +26,29 @@ export class DBService {
         return DBService.instance;
     }
 
+    getPessoa(): Observable<IPerson[]> {
+        return new Observable<IPerson[]>((obs) => {
+            const query = `SELECT * FROM tabpessoa`;
+
+            this.dbPool.query({ sql: query }, (err: MysqlError | null, results?: any) => {
+                if (err) {
+                    obs.error(err);
+                    obs.complete();
+                    return;
+                }
+
+                const res: IPerson[] = results;
+                const peop: IPerson[] = [];
+
+                res.map((pes) => {
+                    peop.push(pes);
+                });
+                obs.next(peop);
+                obs.complete();
+            }).start();
+        });
+    }
+
     // ADD
 
     addPessoa(pes: IPerson): Observable<any> {
@@ -66,11 +89,11 @@ export class DBService {
             DELETE FROM
                 tabpessoa
             WHERE
-                pesCpf = ?
+                pesID = ?
             `;
 
             this.dbPool
-                .query({ sql: query, values: [pes.cpf] },
+                .query({ sql: query, values: [pes.id] },
                     (err: MysqlError | null, results?: any) => {
                         if (err) {
                             obs.error(err);
