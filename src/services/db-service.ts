@@ -26,8 +26,8 @@ export class DBService {
         return DBService.instance;
     }
 
-    getPessoa(): Observable<IPerson[]> {
-        return new Observable<IPerson[]>((obs) => {
+    getPessoa(): Observable<any[]> {
+        return new Observable<any[]>((obs) => {
             const query = `SELECT * FROM tabpessoa`;
 
             this.dbPool.query({ sql: query }, (err: MysqlError | null, results?: any) => {
@@ -37,8 +37,8 @@ export class DBService {
                     return;
                 }
 
-                const res: IPerson[] = results;
-                const peop: IPerson[] = [];
+                const res: any[] = results;
+                const peop: any[] = [];
 
                 res.map((pes) => {
                     peop.push(pes);
@@ -51,7 +51,7 @@ export class DBService {
 
     // ADD
 
-    addPessoa(pes: IPerson): Observable<any> {
+    addPessoa(pes: any): Observable<any> {
         return new Observable<any>((obs) => {
             const query = `
             INSERT INTO tabpessoa (
@@ -69,7 +69,7 @@ export class DBService {
             )`;
 
             this.dbPool
-                .query({ sql: query, values: [pes.name, pes.surname, pes.email, pes.cpf, pes.password] },
+                .query({ sql: query, values: [pes.pesNome, pes.pesSobrenome, pes.pesEmail, pes.pesCpf, pes.pesSenha] },
                     (err: MysqlError | null, results?: any) => {
                         if (err) {
                             obs.error(err);
@@ -105,34 +105,40 @@ export class DBService {
         });
     }
 
-    /* TODO: Terminar updatePessoa */
+    uptPessoa(pes: any): Observable<any> {
+        return new Observable<any>((obs) => {
+            const query = `
+                UPDATE
+                    tabpessoa
+                SET
+                    pesNome = ?,
+                    pesSobrenome = ?,
+                    pesEmail = ?,
+                    pesCpf = ?,
+                    pesSenha = ?
+                WHERE
+                    pesID = ?
+                `;
 
-    // updatePessoa(pes: IPerson): Observable<any> {
-    //     return new Observable<any>((obs) => {
-    //         const query = `
-    //         UPDATE
-    //             tabpessoa
-    //         SET
-    //             pesNome = ?,
-    //             pesSobrenome = ?,
-    //             pesEmail = ?,
-    //             pesCpf = ?,
-    //             pesSenha = ?
-    //         WHERE
-    //             pesID = ?
-    //         `;
 
-    //         this.dbPool
-    //             .query({ sql: query, values: [pes.name, pes.surname, pes.email, pes.cpf, pes.password, pes.ID] },
-    //                 (err: MysqlError | null, results?: any) => {
-    //                     if (err) {
-    //                         obs.error(err);
-    //                         return;
-    //                     }
-    //                     obs.next(results);
-    //                     obs.complete();
-    //                 }).start();
-    //     });
-    // }
+            this.dbPool
+                .query({ sql: query, values: [
+                    pes.obj.pesNome,
+                    pes.obj.pesSobrenome,
+                    pes.obj.pesEmail,
+                    pes.obj.pesCpf,
+                    pes.obj.pesSenha,
+                    pes.id]
+                },
+                    (err: MysqlError | null, results?: any) => {
+                        if (err) {
+                            obs.error(err);
+                            return;
+                        }
+                        obs.next(results);
+                        obs.complete();
+                    }).start();
+        });
+    }
 
 }
