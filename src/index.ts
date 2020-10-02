@@ -19,28 +19,37 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/api', (req: express.Request, res: express.Response) => {
-    res.json(req.body);
-
-    // console.log(req.body);
-
-    DBService.getInstance().addPessoa(req.body).subscribe((response) => console.log(response), (err) => console.log(err));
+app.post('/addPerson', (req: express.Request, res: express.Response) => {
+    DBService.getInstance().addPessoa(req.body).subscribe((response) => {
+        res.json('Pessoa Inserida com Sucesso');
+    }, (err) => {
+        res.status(600).send(`Falha ao Inserir Pessoa: ${err}`);
+    });
 });
 
-app.post('/delete', (req: express.Request, res: express.Response) => {
-    res.json(req.body);
-
-    // console.log(req.body);
-
-    DBService.getInstance().deletePessoa(req.body).subscribe((response) => console.log(response), (err) => console.log(err));
+app.post('/uptPerson', (req: express.Request, res: express.Response) => {
+    DBService.getInstance().uptPessoa(req.body).subscribe((response) => {
+        res.json('Pessoa Atulizada com Sucesso');
+    }, (err) => {
+        res.status(600).send(`Falha ao Atualizar Pessoa: ${err}`);
+    });
 });
 
-app.get('/getPessoas', (req: express.Request, res: express.Response) => {
+app.post('/delPerson', (req: express.Request, res: express.Response) => {
+    DBService.getInstance().deletePessoa(req.body).subscribe((response) => {
+        res.json('Pessoa Deletada com Sucesso.');
+    }, (err) => {
+        res.status(600).send(`Falha ao Deletar Pessoa: ${err}`);
+    });
+});
 
-    DBService.getInstance().getPessoa().subscribe(
-        (pes) => res.json(pes),
-        (err) => console.log(err)
-    );
+app.get('/getPerson', (req: express.Request, res: express.Response) => {
+
+    DBService.getInstance().getPessoa().subscribe((pes) => {
+        res.json(pes);
+    }, (err) => {
+        res.status(600).send(`Falha ao Trazer Pessoas: ${err}`);
+    });
 });
 
 app.listen(port, () => {
